@@ -1,0 +1,78 @@
+1.hive.mapred.mode
+Map/Redure 模式，如果设置为 strict，将禁止3中类型的查询：
+1.1.分区表的where筛选条件必须含有分区字段；
+1.2.对使用了order by语句的查询，必须使用limit语句(order by语句为执行排序会将所有的结果集数据分发到同一个reducer中进行处理，
+增加limit语句可以防止reducer额外执行很长时间)
+1.3.限制笛卡儿积的查询，就是有where语句，而没有on语句。
+'nonstrict'
+2.hive.merge.mapfiles
+在Map-only的任务结束时合并小文件
+是否开启合并 Map 端小文件，当Hive输入由很多个小文件组成，由于每个小文件都会启动一个map任务，如果文件过小，
+会使得map任务启动和初始化的时间大于逻辑处理的时间，造成资源浪费，甚至OOM。
+为此，当我们启动一个任务，发现输入数据量小但任务数量多时，需要注意在Map前端进行输入合并。
+当然，在我们向一个表写数据时，也需要注意输出文件大小
+true
+3.hive.merge.mapredfiles
+是否开启合并 Map/Reduce 小文件，即是否在Map-Reduce的任务结束时合并小文件
+4.hive.exec.parallel
+是否开启 map/reduce job的并发提交。
+5.hive.limit.optimize.enable
+一般情况下，Limit语句还是需要执行整个查询语句，然后再返回部分结果。
+有一个配置属性可以开启，避免这种情况---对数据源进行抽样
+hive.limit.optimize.enable=true --- 开启对数据源进行采样的功能
+hive.limit.row.max.size --- 设置最小的采样容量
+hive.limit.optimize.limit.file --- 设置最大的采样样本数
+缺点：有可能部分数据永远不会被处理到
+6.hive.exec.reducers.bytes.per.reducer
+每一个 reducer 的平均负载字节数。
+7.hive.exec.reducers.max
+设置reducer个数的上限，可以阻止某个查询消耗过多的reducer资源，对这个属性值大小的设定，一个建议的计算公式如下：
+(集群总Reduce槽位个数*1.5) / (执行中查询的平均个数)
+1.5倍数是一个经验系数，用于防止未充分利用集群的情况。
+8.hive.multigroupby.singlemr
+一个特别的优化，是否将查询中的多个group by操作组装到单个MapReduce任务中。
+9.hive.exec.dynamic.partition
+是否打开动态分区。
+hive.exec.dynamic.partition.mode
+打开动态分区后，动态分区的模式，有 strict 和 nonstrict 两个值可选，strict 要求至少包含一个静态分区列，nonstrict 则无此要求。
+hive.exec.max.dynamic.partitions
+所允许的最大的动态分区的个数。
+hive.exec.max.dynamic.partitions.pernode
+单个 reduce 结点所允许的最大的动态分区的个数。
+hive.exec.default.partition.name
+默认的动态分区的名称，当动态分区列为''或者null时，使用此名称。''
+'__HIVE_DEFAULT_PARTITION__'
+10.hive.auto.convert.join
+是否根据输入小表的大小，自动将 Reduce 端的 Common Join 转化为 Map Join，从而加快大表关联小表的 Join 速度。
+11.hive.groupby.skewindata
+决定 group by 操作是否支持倾斜的数据。
+12.hive.default.fileformat
+Hive 默认的输出文件格式，与创建表时所指定的相同，可选项为 'TextFile' 、 'SequenceFile' 或者 'RCFile'。
+13.hive.security.authorization.enabled
+Hive 是否开启权限认证。
+14.hive.map.aggr
+决定是否可以在 Map 端进行聚合操作
+15.hive.merge.size.per.task
+每个任务合并后文件的大小，根据此大小确定 reducer 的个数，默认 256 M。
+256000000
+hive.merge.smallfiles.avgsize
+需要合并的小文件群的平均大小，默认 16 M。
+16000000
+16.hive.optimize.skewjoin
+是否优化数据倾斜的 Join，对于倾斜的 Join 会开启新的 Map/Reduce Job 处理。
+hive.skewjoin.key
+倾斜键数目阈值，超过此值则判定为一个倾斜的 Join 查询。
+1000000
+hive.skewjoin.mapjoin.map.tasks
+处理数据倾斜的 Map Join 的 Map 数上限。
+10000
+hive.skewjoin.mapjoin.min.split
+处理数据倾斜的 Map Join 的最小数据切分大小，以字节为单位，默认为32M。
+33554432
+17.hive.optimize.groupby
+是否优化 group by。
+18.hive.cli.print.header
+是否显示查询结果的列名，默认为不显示。
+false
+hive.cli.encoding
+Hive 默认的命令行字符编码。
