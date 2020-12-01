@@ -1,0 +1,27 @@
+<file>
+    <property>
+        <!--任务内部排序缓冲区大小 默认100M 此参数调大可以减少spill次数  减少磁盘io  建议250M-400M-->
+        <name>mapreduce.task.io.sort.mb</name>
+        <value>100</value>
+    </property>
+    <property>
+        <!--map阶段溢写文件的阈值  不建议修改-->
+        <name>mapreduce.map.sort.spill.percent</name>
+        <value>0.8</value>
+    </property>
+    <property>
+        <!--Reduce Task启动的并发拷贝线程的数量  尽可能的等于或者接近map任务数量,达到并行抓取的效果-->
+        <name>mapreduce.reduce.shuffle.parallelcopies</name>
+        <value>5</value>
+    </property>
+    <property>
+        <!--文件合并因子 如果文件数量太多 可以适当加大 减少磁盘io-->
+        <name>io.sort.factor</name>
+        <value>10</value>
+    </property>
+    <property>
+        <!--map输出的数据是否压缩 默认不压缩-->
+        <name>mapred.compress.map.output</name>
+        <value>false</value>
+    </property>
+</file>

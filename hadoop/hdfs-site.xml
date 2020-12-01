@@ -1,0 +1,23 @@
+<file>
+    <property>
+        <!--NN是否允许被格式化,在生产系统中设置为false,阻止格式化-->
+        <!--hadoop namenode -format作用是生成新的fsimage和edits文件，也会清空之前的元数据-->
+        <name>dfs.namenode.support.allow.format</name>
+        <value>true</value>
+    </property>
+    <property>
+        <!--DN的心跳时间,网络不好的情况下适当调大-->
+        <name>dfs.heartbeat.interval</name>
+        <value>3</value>
+    </property>
+    <property>
+        <!--块的大小  默认128M  物理切块:真切 逻辑切片:假切-->
+        <name>dfs.blocksize</name>
+        <value></value>
+    </property>
+    <property>
+        <!--edits和fsimage合并的阈值 默认1小时  也可以手动执行: hadoop dfsadmin -rollEdits-->
+        <name>dfs.namenode.checkpoint.period</name>
+        <value>3600</value>
+    </property>
+</file>

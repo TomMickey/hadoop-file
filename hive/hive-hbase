@@ -1,0 +1,14 @@
+hbase表映射到hive
+create external table userinfo(
+id int,
+name string,
+age int,
+address string
+)
+stored by 'org.apache.hadoop.hive.hbase.HBaseStorageHandler'
+with
+serdeproperties
+("hbase.columns.mapping"=":key,user:id,user:name,info:age,info:address )
+TBLPROPERTIES
+("hbase.table.name" = "userinfo");
+建立映射表后直接提取文件内容
